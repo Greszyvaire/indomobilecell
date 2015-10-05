@@ -72,6 +72,14 @@ class SiteController extends Controller {
         ];
     }
 
+    public function actionCoba() {
+        Yii::$app->mail->compose('email', ['bb' => 'ini hasil'])
+                ->setFrom(['info@indomobilecell.com'=> 'Indomobilecell Malang'])
+                ->setTo('yuliantofrandi@gmail.com')
+                ->setSubject('This is a test mail ')
+                ->send();
+    }
+
     public function actionIndex() {
         $arrival = Product::find()->with(['brand', 'productPhoto', 'productCategory'])->limit(4)->orderBy('id desc')->all();
 
@@ -113,7 +121,7 @@ class SiteController extends Controller {
     }
 
     public function actionContact() {
-        $this->layout='mainSingle';
+        $this->layout = 'mainSingle';
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $from = $_POST['ContactForm']['email'];
@@ -157,13 +165,11 @@ class SiteController extends Controller {
                 return $this->render('subscribe', [
 //                    'model' => $model,
                 ]);
-                
             } else {
                 Yii::$app->getSession()->setFlash('warning', 'Anda telah terdaftar di akun News Letter kami<br> Terimakasih karena sudah berlangganan di indomobilecell.com');
                 return $this->render('subscribe', [
 //                    'model' => $model,
                 ]);
-                
             }
         }
     }

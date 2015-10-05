@@ -44,7 +44,7 @@ $session = Yii::$app->session;
                                     </div>
 
                                     <div class="dropdown-banner-holder">
-                                        <a href="#"><img alt="" src="images/banners/accesories.png" /></a>
+                                        <a href="#"><img alt="" src="http://app.indomobilecell.com/images/banners/accesories.png" /></a>
                                     </div>
                                 </div>
                             </li>
@@ -86,7 +86,7 @@ $session = Yii::$app->session;
                                     </div>
 
                                     <div class="dropdown-banner-holder">
-                                        <a href="#"><img alt="" src="images/banners/smartphone.png" /></a>
+                                        <a href="#"><img alt="" src="http://app.indomobilecell.com/images/banners/smartphone.png" /></a>
                                     </div>
                                 </div>
                                 <!-- ================================== MEGAMENU VERTICAL ================================== -->                        
@@ -121,7 +121,7 @@ $session = Yii::$app->session;
 
 
                                     <div class="dropdown-banner-holder">
-                                        <a href="#"><img alt="" src="images/banners/tablet.png" /></a>
+                                        <a href="#"><img alt="" src="http://app.indomobilecell.com/images/banners/tablet.png" /></a>
                                     </div>
                                 </div>
                                 <!-- ================================== MEGAMENU VERTICAL ================================== -->                    </li>
@@ -144,7 +144,7 @@ $session = Yii::$app->session;
 
 
                                     <div class="dropdown-banner-holder">
-                                        <a href="#"><img alt="" src="images/banners/handphone.png" /></a>
+                                        <a href="#"><img alt="" src="http://app.indomobilecell.com/images/banners/handphone.png" /></a>
                                     </div>
                                 </div>
                                 <!-- ================================== MEGAMENU VERTICAL ================================== -->    

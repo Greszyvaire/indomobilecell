@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+require 'PHPMailerAutoload.php';
 $mail = new PHPMailer();
 $mail->IsSMTP();
 $mail->Host = "103.27.206.203";

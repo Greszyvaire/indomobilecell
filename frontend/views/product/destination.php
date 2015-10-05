@@ -25,7 +25,7 @@ $user = User::findOne(Yii::$app->user->identity->id);
 
             <div class="billing-address">
                 <h2 class="border h1">Alamat Pengiriman</h2>
-                <?
+                <?php
                 if(Yii::$app->session->getAllFlashes()){
                      foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 
