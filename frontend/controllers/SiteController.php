@@ -73,11 +73,12 @@ class SiteController extends Controller {
     }
 
     public function actionCoba() {
-        Yii::$app->mail->compose('email', ['bb' => 'ini hasil'])
-                ->setFrom(['info@indomobilecell.com'=> 'Indomobilecell Malang'])
-                ->setTo('yuliantofrandi@gmail.com')
-                ->setSubject('This is a test mail ')
-                ->send();
+//        echo Yii::$app->mail->compose('email', ['bb' => 'ini hasil'])
+//                ->setFrom(['jagoan@indomobilecell.com'=> 'Indomobilecell Malang'])
+//                ->setTo('yulianto@landa.co.id')
+//                ->setSubject('EEE Pak Selamat Siang ')
+//                ->send();
+//        echo 'aa';
     }
 
     public function actionIndex() {
