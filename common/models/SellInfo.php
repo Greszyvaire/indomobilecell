@@ -53,5 +53,11 @@ class SellInfo extends \yii\db\ActiveRecord {
             'name' => 'Name',
         ];
     }
+    
+    public function getKota(){
+        $kota = (isset($this->city->name)) ? $this->city->name : '';
+        $province = (isset($this->city->province->name)) ? $this->city->province->name : '';
+        return $kota . ', ' . $province;
+    }
 
 }

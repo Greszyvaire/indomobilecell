@@ -41,7 +41,7 @@ if ($model->is_confirm == 1 && $model->info->status == 'pending') {
         <div class='well'>
             <div class="titleBar">
                 <div class="strong b-account__title">
-                    Pesanan #<?= $model->code ?> dari <?= date('d/m/Y H:i', strtotime($model->created)) ?>
+                    Pesanan #<?= $model->code ?> dari <?= date('d-m-Y, H:i', strtotime($model->created)) ?>
                     <?php echo $conf ?>
                 </div>
             </div>
@@ -51,30 +51,22 @@ if ($model->is_confirm == 1 && $model->info->status == 'pending') {
                         <td class="">:</td>
                         <td class="span5"> <?= $model->status ?></td>
 
-                        <td class="span1">Province</td>
-                        <td class="">:</td>
-                        <td class="span5" style="width: 30%;">d.i. Yogyakarta</td>
+                        <td class="span1" rowspan="3">Alamat</td>
+                        <td class="" rowspan="3">:</td>
+                        <td class="span5" style="width: 30%;" rowspan="3"><?= $modelInfo->address . ', ' . $modelInfo->Kota ?></td>
                     </tr>
                     <tr>
-                        <td class="span1">Name</td>
+                        <td class="span1">Nama</td>
                         <td class="">:</td>
                         <td class="span5"><?= $modelInfo->name ?></td>
-
-                        <td class="span1">City</td>
-                        <td class="">:</td>
-                        <td class="span5">kab. Bantul</td>
                     </tr>    
                     <tr>
-                        <td class="span1">Phone</td>
+                        <td class="span1">No. Telephone</td>
                         <td class="">:</td>
                         <td class="span5"><?= Yii::$app->landa->hp($modelInfo->phone) ?></td>
-
-                        <td class="span1">Address</td>
-                        <td class="">:</td>
-                        <td class="span5"><?= $modelInfo->address ?></td>
                     </tr>  
                     <tr>
-                        <td class="span1">Note</td>
+                        <td class="span1">Kode Pos</td>
                         <td class="">:</td>
                         <td class="span5"><?= $modelInfo->postcode ?></td>
 
@@ -111,8 +103,8 @@ if ($model->is_confirm == 1 && $model->info->status == 'pending') {
                     <td><a href="' . $product->url . '">' . $product->name . '</a>
                         <ul class="unstyled">
                                         
-                                        <li>Product Code : ' . $product->code . '</li>
-                                        <li>Brand : ' . $product->brand_name . '</li>
+                                        <li>Kode : ' . $product->code . '</li>
+                                        <li>Merek : ' . $product->brand_name . '</li>
                                 </ul>
                                 </td>
                     <td align="center">' . $arr->qty . '</td>
