@@ -18,7 +18,7 @@ class ProductBrand extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'acca_product_brand';
+        return 'product_brand';
     }
 
     /**

@@ -33,7 +33,7 @@ class Sell extends \yii\db\ActiveRecord {
      * @inheritdoc
      */
     public static function tableName() {
-        return 'acca_sell';
+        return 'sell';
     }
 
     public function getInfo() {

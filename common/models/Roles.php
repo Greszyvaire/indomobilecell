@@ -17,7 +17,7 @@ class Roles extends \yii\db\ActiveRecord {
      * @inheritdoc
      */
     public static function tableName() {
-        return '{{%acca_roles}}';
+        return '{{%roles}}';
     }
 
     /**

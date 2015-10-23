@@ -18,7 +18,7 @@ class City extends \yii\db\ActiveRecord {
      * @inheritdoc
      */
     public static function tableName() {
-        return 'acca_city';
+        return 'city';
     }
     public function getProvince() {
         return $this->hasOne(Province::className(), ['id' => 'province_id']);

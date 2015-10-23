@@ -27,7 +27,7 @@ class ArticleCategory extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'acca_article_category';
+        return 'article_category';
     }
 
     /**

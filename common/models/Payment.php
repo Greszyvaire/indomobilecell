@@ -29,7 +29,7 @@ class Payment extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'acca_payment';
+        return 'payment';
     }
 
     /**

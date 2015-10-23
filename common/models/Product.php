@@ -39,7 +39,7 @@ class Product extends \yii\db\ActiveRecord {
      * @inheritdoc
      */
     public static function tableName() {
-        return 'acca_product';
+        return 'product';
     }
 
     public function getBrand() {

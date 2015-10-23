@@ -39,7 +39,7 @@ class User2 extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'acca_user';
+        return 'user';
     }
 
     /**

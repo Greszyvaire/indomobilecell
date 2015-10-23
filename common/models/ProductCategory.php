@@ -26,7 +26,7 @@ class ProductCategory extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'acca_product_category';
+        return 'product_category';
     }
 
     /**

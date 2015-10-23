@@ -21,7 +21,7 @@ class SellInfo extends \yii\db\ActiveRecord {
      * @inheritdoc
      */
     public static function tableName() {
-        return 'acca_sell_info';
+        return 'sell_info';
     }
     public function getCity() {
         return $this->hasOne(City::className(), ['id' => 'city_id']);

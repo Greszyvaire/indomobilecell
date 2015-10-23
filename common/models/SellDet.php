@@ -19,7 +19,7 @@ class SellDet extends \yii\db\ActiveRecord {
      * @inheritdoc
      */
     public static function tableName() {
-        return 'acca_sell_det';
+        return 'sell_det';
     }
 
     /**

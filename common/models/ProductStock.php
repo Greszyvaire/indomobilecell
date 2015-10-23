@@ -23,7 +23,7 @@ class ProductStock extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'acca_product_stock';
+        return 'product_stock';
     }
 
     /**

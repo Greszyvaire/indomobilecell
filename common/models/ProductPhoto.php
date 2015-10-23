@@ -17,7 +17,7 @@ class ProductPhoto extends \yii\db\ActiveRecord {
      * @inheritdoc
      */
     public static function tableName() {
-        return 'acca_product_photo';
+        return 'product_photo';
     }
 
     /**

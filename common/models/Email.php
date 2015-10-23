@@ -25,7 +25,7 @@ class Email extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'acca_email';
+        return 'email';
     }
 
     /**

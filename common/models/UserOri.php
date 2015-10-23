@@ -32,7 +32,7 @@ class UserOri extends ActiveRecord implements IdentityInterface {
      * @inheritdoc
      */
     public static function tableName() {
-        return 'acca_user2';
+        return 'user2';
     }
 
     /**
