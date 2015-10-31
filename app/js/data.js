@@ -1,6 +1,6 @@
 app.factory("Data", ['$http', '$location',
     function ($http, $q, $location) {
-        var serviceBase = '../';
+        var serviceBase = '../frontend/web/indomobilecell/';
         var suffix = '.html';
 
         var obj = {};

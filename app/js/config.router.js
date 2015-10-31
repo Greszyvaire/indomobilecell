@@ -111,6 +111,66 @@ angular.module('app')
                                             }]
                                     }
                                 })
+                                  .state('master.customer', {
+                                    url: '/customer',
+                                    templateUrl: 'tpl/m_customer/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/customer.js');
+                                            }]
+                                    }
+                                })
+                                  .state('master.pengiriman', {
+                                    url: '/pengiriman',
+                                    templateUrl: 'tpl/m_pengiriman/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/pengiriman.js');
+                                            }]
+                                    }
+                                })
+                                  .state('master.satuan', {
+                                    url: '/satuan',
+                                    templateUrl: 'tpl/m_satuan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/satuan.js');
+                                            }]
+                                    }
+                                })
+                                  .state('master.barang', {
+                                    url: '/barang',
+                                    templateUrl: 'tpl/m_barang/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/barang.js');
+                                            }]
+                                    }
+                                })
+                                  .state('master.inventory', {
+                                    url: '/inventory',
+                                    templateUrl: 'tpl/m_inventory/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/inventory.js');
+                                            }]
+                                    }
+                                })
+                                  .state('master.merk', {
+                                    url: '/merk',
+                                    templateUrl: 'tpl/m_merk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/merk.js');
+                                            }]
+                                    }
+                                })
                                 
 
 
