@@ -21,7 +21,7 @@ app.controller('penggunaCtrl', function ($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
 
-        Data.get('pengguna', param).then(function (data) {
+        Data.get('pengguna/index', param).then(function (data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.round(data.totalItems / limit);
         });
