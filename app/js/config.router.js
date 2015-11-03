@@ -157,7 +157,7 @@ angular.module('app')
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function($ocLazyLoad) {
-                                                return $ocLazyLoad.load('js/controllers/inventory.js');
+                                                return $ocLazyLoad.load('js/controllers/sell.js');
                                             }]
                                     }
                                 })

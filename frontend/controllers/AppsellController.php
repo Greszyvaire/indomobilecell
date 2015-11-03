@@ -3,14 +3,15 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\Article;
+use common\models\Sell;
+use common\models\SellDet;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class ApparticleController extends Controller {
+class AppsellController extends Controller {
 
     public function behaviors() {
         return [
@@ -19,8 +20,6 @@ class ApparticleController extends Controller {
                 'actions' => [
                     'index' => ['get'],
                     'view' => ['get'],
-                    'kategories' => ['get'],
-                    'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
                 ],
@@ -55,7 +54,7 @@ class ApparticleController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "article.created DESC";
+        $sort = "sell.id DESC";
         $offset = 0;
         $limit = 10;
         //        Yii::error($params);
@@ -80,10 +79,13 @@ class ApparticleController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('article')
-                ->join('join','article_category','article_category.id = article.article_category_id')
+                ->from('sell')
+                ->join('left join', 'sell_info', 'sell.id = sell_info.sell_id')
+                ->join('left join', 'user', 'sell.customer_user_id = user.id')
+                ->join('left join', 'city', 'sell_info.city_id = city.id')
+                ->join('left join', 'province', 'city.province_id = province.id')
                 ->orderBy($sort)
-                ->select("article.*, article_category.name");
+                ->select("sell.*, sell_info.*, user.name,city.name as city, province.name as province");
 
         //filter
         if (isset($params['filter'])) {
@@ -96,59 +98,59 @@ class ApparticleController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-
+        
+        
         $data = array();
-        $i=0;
+        $i = 0;
         foreach ($models as $val) {
             $data[$i] = $val;
-            if($val['publish'] == "1"){
-                $data[$i]['status_publish'] = "Publish";
-            }else{
-                $data[$i]['status_publish'] = "Unpublish";
+            if ($val['is_confirm'] == "1") {
+                $data[$i]['bayar'] = "Terbayar";
+            } else {
+                $data[$i]['bayar'] = "Belum Terbayar";
             }
-        $i++;
+            if ($val['is_asuransi'] == "1") {
+                $data[$i]['asuransi'] = "Asuransi";
+            } else {
+                $data[$i]['asuransi'] = "Tanpa Asuransi";
+            }
+            $i++;
         }
-        
+
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $data, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
-       public function actionKategories() {
-        $query = new Query;
-        $query->from('article_category')
-                ->select("*");
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-
-        $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'kategori' => $models));
-    }
-    
 
     public function actionView($id) {
 
         $model = $this->findModel($id);
+        
+        // DETAIL
+         $det = SellDet::find()
+                ->with(['product'])
+                ->orderBy('id')
+                ->where(['sell_id' => $model['id']])
+                ->all();
+
+
+        $detail = array();
+
+        foreach ($det as $key => $val) {
+            $detail[$key] = $val->attributes;
+
+            $namaBarang = (isset($val->barang->nama)) ? $val->barang->nama : '';
+            $hargaBarang = (isset($val->barang->harga_beli_terakhir)) ? $val->barang->harga_beli_terakhir : '';
+            $jualBarang = (isset($val->barang->harga_jual)) ? $val->barang->harga_jual : '';
+            $dokter = (isset($val->dokter->nama)) ? $val->dokter->nama : '';
+            $terapis = (isset($val->terapis->nama)) ? $val->terapis->nama : '';
+            $detail[$key]['produk'] = ['id' => $val->produk_id, 'nama' => $namaBarang, 'harga_beli_terakhir' => $hargaBarang, 'harga_jual' => $jualBarang];
+            $detail[$key]['terapis'] = ['id' => $val->pegawai_terapis_id, 'nama' => $terapis];
+            $detail[$key]['dokter'] = ['id' => $val->pegawai_dokter_id, 'nama' => $dokter];
+        }
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
-    }
-
-    public function actionCreate() {
-        $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Article();
-        $model->attributes = $params;
-        $model->alias = Yii::$app->landa->urlParsing($model->title);
-        
-
-        if ($model->save()) {
-            $this->setHeader(200);
-            echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
-        } else {
-            $this->setHeader(400);
-            echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
-        }
     }
 
     public function actionUpdate($id) {
@@ -180,7 +182,7 @@ class ApparticleController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = Sell::findOne($id)) !== null) {
             return $model;
         } else {
 
