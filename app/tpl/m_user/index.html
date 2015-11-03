@@ -21,18 +21,7 @@
                         </div>
 
                     </div>
-                    <div class="col-md-6 col-sm-12">
-
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Status</label>
-                            <div class="col-sm-6">
-                                <select stInputEvent="change" st-search="is_deleted" class="form-control">
-                                    <option value="0">Aktif</option>
-                                    <option value="1">Terhapus</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <div class="table-responsive">
@@ -43,7 +32,7 @@
                             
                             <th st-sort="username">Username</th>
                             <th st-sort="email">Email</th>
-                            <th st-sort="nama">Nama</th>
+                            <th st-sort="name">Nama</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
@@ -51,13 +40,11 @@
                            
                             <td>{{row.username}}</td>
                             <td>{{row.email}}</td>
-                            <td>{{row.nama}}</td>
+                            <td>{{row.name}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)" ng-show="row.is_deleted == 0"></button>
-                                    <button type="button" class="btn btn-danger fa fa-trash-o" ng-click="trash(row);" ng-show="row.is_deleted == 0"></button>
-                                    <button type="button" class="btn btn-info fa fa-recycle" ng-click="restore(row);" ng-show="row.is_deleted == 1"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ng-show="row.is_deleted == 1"></button>
+                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);"></button>
                                 </div> 
                             </td>
                         </tr>
@@ -106,7 +93,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Name</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" ng-model="form.nama" ng-disabled="is_view" required>
+                                    <input type="text" class="form-control" ng-model="form.name" ng-disabled="is_view" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -116,13 +103,7 @@
                                 </div>
                             </div>
 
-                            <label class="col-sm-2 control-label">Status</label>
-                            <div class="col-sm-6">
-                                <div class="btn-group m-r">
-                                    <label class="btn btn-default" ng-model="form.is_deleted" btn-radio="'0'" required>Aktif</label>
-                                    <label class="btn btn-default" ng-model="form.is_deleted" btn-radio="'1'" required>Terhapus</label>
-                                </div>
-                            </div>
+                            
                         </div>
 
                     </div>

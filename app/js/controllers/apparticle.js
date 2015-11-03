@@ -30,7 +30,7 @@ app.controller('apparticleCtrl', function ($scope, Data, toaster) {
 
         Data.get('apparticle/index', param).then(function (data) {
             $scope.displayed = data.data;
-            tableState.pagination.numberOfPages = Math.round(data.totalItems / limit);
+            tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
 
         $scope.isLoading = false;
@@ -56,7 +56,7 @@ app.controller('apparticleCtrl', function ($scope, Data, toaster) {
     };
     $scope.save = function (form) {
         
-        var url = (form.id > 0) ? 'apparticle/update/' + form.id : 'apparticle/create/'+form.id;
+        var url = (form.id > 0) ? 'apparticle/update/' + form.id : 'apparticle/create/';
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
