@@ -125,7 +125,7 @@ class AppsellController extends Controller {
     public function actionView($id) {
 
         $model = $this->findModel($id);
-        
+        $data = $model->attributes;
         // DETAIL
          $det = SellDet::find()
                 ->with(['product'])
@@ -139,18 +139,15 @@ class AppsellController extends Controller {
         foreach ($det as $key => $val) {
             $detail[$key] = $val->attributes;
 
-            $namaBarang = (isset($val->barang->nama)) ? $val->barang->nama : '';
-            $hargaBarang = (isset($val->barang->harga_beli_terakhir)) ? $val->barang->harga_beli_terakhir : '';
-            $jualBarang = (isset($val->barang->harga_jual)) ? $val->barang->harga_jual : '';
-            $dokter = (isset($val->dokter->nama)) ? $val->dokter->nama : '';
-            $terapis = (isset($val->terapis->nama)) ? $val->terapis->nama : '';
-            $detail[$key]['produk'] = ['id' => $val->produk_id, 'nama' => $namaBarang, 'harga_beli_terakhir' => $hargaBarang, 'harga_jual' => $jualBarang];
-            $detail[$key]['terapis'] = ['id' => $val->pegawai_terapis_id, 'nama' => $terapis];
-            $detail[$key]['dokter'] = ['id' => $val->pegawai_dokter_id, 'nama' => $dokter];
+//            $namaBarang = (isset($val->barang->nama)) ? $val->barang->nama : '';
+//            $hargaBarang = (isset($val->barang->harga_beli_terakhir)) ? $val->barang->harga_beli_terakhir : '';
+//            
+//            $detail[$key]['produk'] = ['id' => $val->produk_id, 'nama' => $namaBarang, 'harga_beli_terakhir' => $hargaBarang, 'harga_jual' => $jualBarang];
+           
         }
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' =>$data,'detail'=>$detail), JSON_PRETTY_PRINT);
     }
 
     public function actionUpdate($id) {
