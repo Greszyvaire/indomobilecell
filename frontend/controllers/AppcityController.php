@@ -3,14 +3,14 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\Article;
+use common\models\City;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class ApparticleController extends Controller {
+class AppcityController extends Controller {
 
     public function behaviors() {
         return [
@@ -19,6 +19,7 @@ class ApparticleController extends Controller {
                 'actions' => [
                     'index' => ['get'],
                     'view' => ['get'],
+                    'province' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
@@ -50,11 +51,23 @@ class ApparticleController extends Controller {
         return true;
     }
 
+    public function actionProvince() {
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('province')
+                ->select("province.*")
+                ->andWhere(['like', 'name', $params['nama']]);
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
     public function actionIndex() {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "article.created DESC";
+        $sort = "city.id DESC";
         $offset = 0;
         $limit = 10;
         //        Yii::error($params);
@@ -79,10 +92,10 @@ class ApparticleController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('article')
-                ->join('join','article_category','article_category.id = article.article_category_id')
+                ->from('city')
+                ->join('join', 'province', 'province.id = city.province_id')
                 ->orderBy($sort)
-                ->select("article.*, article_category.name");
+                ->select("city.*, province.name as province");
 
         //filter
         if (isset($params['filter'])) {
@@ -96,50 +109,39 @@ class ApparticleController extends Controller {
         $models = $command->queryAll();
         $totalItems = $query->count();
 
-        $data = array();
-        $i=0;
-        foreach ($models as $val) {
-            $data[$i] = $val;
-            if($val['publish'] == "1"){
-                $data[$i]['status_publish'] = "Publish";
-            }else{
-                $data[$i]['status_publish'] = "Unpublish";
-            }
-        $i++;
-        }
-        
-        $this->setHeader(200);
 
-        echo json_encode(array('status' => 1, 'data' => $data, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
-    }
-       public function actionKategories() {
-        $query = new Query;
-        $query->from('article_category')
-                ->select("*");
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
 
         $this->setHeader(200);
 
-        echo json_encode(array('status' => 1, 'kategori' => $models));
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
-    
 
     public function actionView($id) {
 
         $model = $this->findModel($id);
+        $data = $model->attributes;
+        $cus = \common\models\Province::find()
+                ->where(['id' => $model['province_id']])
+                ->One();
+        $idpro = (isset($cus->id)) ? $cus->id : '';
+        $name = (isset($cus->name)) ? $cus->name : '';
+
+
+        $data['provinces'] = [
+            'id' => $idpro,
+            'name' => $name,
+        ];
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $data), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Article();
+        $model = new City();
         $model->attributes = $params;
-        $model->alias = Yii::$app->landa->urlParsing($model->title);
-        
+        $model->province_id = $params['provinces']['id'];
+
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -152,8 +154,10 @@ class ApparticleController extends Controller {
 
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
+        \Yii::error($params);
         $model = $this->findModel($id);
         $model->attributes = $params;
+         $model->province_id = $params['provinces']['id'];
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -179,7 +183,7 @@ class ApparticleController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = City::findOne($id)) !== null) {
             return $model;
         } else {
 

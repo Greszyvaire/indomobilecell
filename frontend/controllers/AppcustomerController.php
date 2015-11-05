@@ -3,14 +3,14 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\Article;
+use common\models\User;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class ApparticleController extends Controller {
+class AppcustomerController extends Controller {
 
     public function behaviors() {
         return [
@@ -54,7 +54,7 @@ class ApparticleController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "article.created DESC";
+        $sort = "user.username DESC";
         $offset = 0;
         $limit = 10;
         //        Yii::error($params);
@@ -79,10 +79,11 @@ class ApparticleController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('article')
-                ->join('join','article_category','article_category.id = article.article_category_id')
+                ->from('user')
+//                ->join('join','article_category','article_category.id = article.article_category_id')
                 ->orderBy($sort)
-                ->select("article.*, article_category.name");
+                ->select("user.*")
+                ->where("user.roles_id = 1");
 
         //filter
         if (isset($params['filter'])) {
@@ -97,34 +98,19 @@ class ApparticleController extends Controller {
         $totalItems = $query->count();
 
         $data = array();
-        $i=0;
+        $i = 0;
         foreach ($models as $val) {
             $data[$i] = $val;
-            if($val['publish'] == "1"){
-                $data[$i]['status_publish'] = "Publish";
-            }else{
-                $data[$i]['status_publish'] = "Unpublish";
-            }
-        $i++;
+            $city = \common\models\City::findOne($val['city_id']);
+            $data[$i]['city'] = (empty($city)) ? [] : $city->attributes;
+            $data[$i]['nama_kota'] = (empty($city)) ? '-' : $city->name;
+            $i++;
         }
-        
+
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $data, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
-       public function actionKategories() {
-        $query = new Query;
-        $query->from('article_category')
-                ->select("*");
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-
-        $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'kategori' => $models));
-    }
-    
 
     public function actionView($id) {
 
@@ -136,10 +122,10 @@ class ApparticleController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Article();
+        $model = new User();
         $model->attributes = $params;
         $model->alias = Yii::$app->landa->urlParsing($model->title);
-        
+
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -165,7 +151,7 @@ class ApparticleController extends Controller {
     }
 
     public function actionDelete($id) {
-        Yii::error($id);
+
         $model = $this->findModel($id);
 
         if ($model->delete()) {
@@ -179,7 +165,7 @@ class ApparticleController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
 

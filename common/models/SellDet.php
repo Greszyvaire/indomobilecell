@@ -32,7 +32,7 @@ class SellDet extends \yii\db\ActiveRecord {
         ];
     }
     public function getProduct() {
-        return $this->hasOne(Product::className(), ['product_id' => 'id']);
+        return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
     /**

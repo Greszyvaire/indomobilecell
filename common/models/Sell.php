@@ -36,6 +36,9 @@ class Sell extends \yii\db\ActiveRecord {
         return 'sell';
     }
 
+    public function getUser() {
+        return $this->hasOne(User::className(), ['id' => 'customer_user_id']);
+    }
     public function getInfo() {
         return $this->hasOne(SellInfo::className(), ['sell_id' => 'id']);
     }

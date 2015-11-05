@@ -1,7 +1,7 @@
-app.controller('appsellCtrl', function ($scope, Data, toaster) {
+app.controller('paymentCtrl', function($scope, Data, toaster) {
     //upload
 
-    
+
     //init data
     var tableStateRef;
 
@@ -9,8 +9,14 @@ app.controller('appsellCtrl', function ($scope, Data, toaster) {
     $scope.form = {};
     $scope.is_edit = false;
     $scope.is_view = false;
-   
 
+     $scope.cariProvince = function($query) {
+        if ($query.length >= 3) {
+            Data.get('appcity/province', {nama: $query}).then(function(data) {
+                $scope.results = data.data;
+            });
+        }
+    }
     $scope.callServer = function callServer(tableState) {
         tableStateRef = tableState;
         $scope.isLoading = true;
@@ -26,39 +32,39 @@ app.controller('appsellCtrl', function ($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
 
-        Data.get('appsell/index', param).then(function (data) {
+        Data.get('apppayment/index', param).then(function(data) {
             $scope.displayed = data.data;
-            tableState.pagination.numberOfPages = Math.round(data.totalItems / limit);
+            tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
 
         $scope.isLoading = false;
     };
 
-    $scope.create = function (form) {
+    $scope.create = function(form) {
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.formtitle = "Form Tambah Data";
         $scope.form = {};
     };
-    $scope.update = function (row) {
+    $scope.update = function(form) {
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Edit Data : " + row.code;
-         $scope.selected(row.id);
-        $scope.form = row;
-       
+        $scope.formtitle = "Edit Data : " + form.trans_number;
+        
+        $scope.form = form;
     };
-    $scope.view = function (row) {
+    $scope.view = function(form) {
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + row.code;
-        $scope.form = row;
-          $scope.selected(row.id);
-    };
-    $scope.save = function (form) {
+        $scope.formtitle = "Lihat Data : " + form.name;
         
-        var url = 'appsell/update/' + form.id;
-        Data.post(url, form).then(function (result) {
+        $scope.form = form;
+        
+    };
+    $scope.save = function(form) {
+
+        var url = (form.id > 0) ? 'apppayment/update/' + form.id : 'apppayment/create/';
+        Data.post(url, form).then(function(result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
@@ -68,26 +74,26 @@ app.controller('appsellCtrl', function ($scope, Data, toaster) {
             }
         });
     };
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $scope.is_edit = false;
         $scope.is_view = false;
     };
 
 
-    $scope.delete = function (row) {
+    $scope.delete = function(row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('appsell/delete/' + row.id).then(function (result) {
+            Data.delete('apppayment/delete/' + row.id).then(function(result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
     };
       $scope.selected = function(id) {
          
-        Data.get('appsell/view/' + id).then(function(data) {
+        Data.get('appcity/view/' + id).then(function(data) {
             $scope.form = data.data;
-            $scope.detSell = data.detail;
             console.log(data);
         });
       };
+
 
 })

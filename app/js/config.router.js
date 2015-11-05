@@ -69,6 +69,10 @@ angular.module('app')
                                     url: '/master',
                                     templateUrl: 'tpl/app.html'
                                 })
+                                .state('transaksi', {
+                                    url: '/transaksi',
+                                    templateUrl: 'tpl/app.html'
+                                })
                                 // master article
                                 .state('master.apparticle', {
                                     url: '/article',
@@ -131,6 +135,21 @@ angular.module('app')
                                             }]
                                     }
                                 })
+                                   .state('transaksi.payment', {
+                                    url: '/payment',
+                                    templateUrl: 'tpl/t_payment/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load('textAngular')
+                                                        .then(
+                                                                function () {
+                                                                    return $ocLazyLoad.load('js/controllers/payment.js');
+                                                                }
+                                                        );
+                                            }]
+                                    }
+                                })
                                   .state('master.satuan', {
                                     url: '/satuan',
                                     templateUrl: 'tpl/m_satuan/index.html',
@@ -151,9 +170,9 @@ angular.module('app')
                                             }]
                                     }
                                 })
-                                  .state('master.inventory', {
-                                    url: '/inventory',
-                                    templateUrl: 'tpl/m_inventory/index.html',
+                                  .state('transaksi.sell', {
+                                    url: '/sell',
+                                    templateUrl: 'tpl/t_sell/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function($ocLazyLoad) {

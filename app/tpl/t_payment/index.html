@@ -1,4 +1,4 @@
-<div ng-controller="appcustomerCtrl">
+<div ng-controller="paymentCtrl">
     <div class="bg-light lter b-b wrapper-md">
         <h1 class="m-n font-thin h3">Data Master - Customer</h1>
     </div>
@@ -7,16 +7,16 @@
             <div class="panel-heading">
                 <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                    <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
+                    <!--<button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>-->
                 </div> 
             </div>
             <div collapse="isCollapsed" class="panel-body collapse" style="height: 0px;">
                 <div class="form-horizontal">
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Judul</label>
+                            <label class="col-sm-3 control-label">Nota</label>
                             <div class="col-sm-6">
-                                <input st-search="title" class="form-control"/>
+                                <input st-search="trans_number" class="form-control"/>
                             </div>
                         </div>
 
@@ -24,23 +24,31 @@
 
                 </div>
             </div>
+            
             <div class="table-responsive">
                 <table class="table table-striped table-hover" >
                     <thead>
                         <tr>
-                            <th st-sort="username">Username</th>
-                            <th st-sort="email">Email</th>
-                            <th st-sort="name">Name</th>
-                            <th st-sort="nama_kota">Kota</th>
+                            <th st-sort="email">Nota</th>
+                            <th st-sort="name">Atas nama</th>
+                            <th st-sort="nama_kota">No Rekening</th>
+                            <th st-sort="nama_kota">Status</th>
+                            <th st-sort="nama_kota">Nama Pengguna</th>
+                            <th st-sort="nama_kota">Jumlah</th>
+                            <th st-sort="nama_kota">Tanggal</th>
 
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
-                            <td>{{row.username}}</td>
-                            <td>{{row.email}}</td>
-                            <td>{{row.name}}</td>
-                            <td>{{row.nama_kota}}</td>
+                            
+                            <td>{{row.trans_number}}</td>
+                            <td>{{row.self_name}}</td>
+                            <td>{{row.self_account_number}}</td>
+                            <td>{{row.status_bayar}} </td>
+                            <td>{{row.user}}</td>
+                            <td>{{row.amount | currency}}</td>
+                            <td>{{row.created}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
                                     <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
@@ -76,33 +84,51 @@
                     <div class="col-md-12 col-sm-12">
                       
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">Name</label>
+                            <label class="col-sm-2 control-label">Nota</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="form.name" ng-disabled="is_view" required>
+                                <input type="text" class="form-control" ng-model="form.trans_number" ng-disabled="is_view" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">Username</label>
+                            <label class="col-sm-2 control-label">Bank Tujuan</label>
                             <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="form.username" ng-disabled="is_view" required>
+                                <input type="text" class="form-control" ng-model="form.bank_account" ng-disabled="is_view" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">Password</label>
+                            <label class="col-sm-2 control-label">Atas nama</label>
                             <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="form.password" ng-disabled="is_view" required>
+                                <input type="text" class="form-control" ng-model="form.self_name" ng-disabled="is_view" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">Status</label>
+                            <label class="col-sm-2 control-label">No Rekening</label>
                             <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="form.username" ng-disabled="is_view" required>
+                                <input type="text" class="form-control" ng-model="form.self_account_number" ng-disabled="is_view" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">Username</label>
+                            <label class="col-sm-2 control-label">Jumlah Bayar</label>
                             <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="form.username" ng-disabled="is_view" required>
+                                <input type="text" class="form-control" ng-model="form.amount" ng-disabled="is_view" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Jumlah Bayar</label>
+                            <div class="col-sm-4">
+                                    <label class="btn btn-default" ng-model="form.status" btn-radio="'pending'" required>Pending</label>
+                                    <label class="btn btn-default" ng-model="form.status" btn-radio="'confirm'" required>Confirm</label>
+                                    <label class="btn btn-default" ng-model="form.status" btn-radio="'reject'" required>Reject</label>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">Isi</label>
+                            <div class="col-sm-10">
+                                <div lazy-load="textAngular">
+                                    <div text-angular ng-model="form.description" ng-disabled="is_view" class="btn-groups" required></div>
+                                </div>
+
                             </div>
                         </div>
                         

@@ -82,10 +82,10 @@ class AppsellController extends Controller {
                 ->from('sell')
                 ->join('left join', 'sell_info', 'sell.id = sell_info.sell_id')
                 ->join('left join', 'user', 'sell.customer_user_id = user.id')
-                ->join('left join', 'city', 'sell_info.city_id = city.id')
-                ->join('left join', 'province', 'city.province_id = province.id')
+//                ->join('left join', 'city', 'sell_info.city_id = city.id')
+//                ->join('left join', 'province', 'city.province_id = province.id')
                 ->orderBy($sort)
-                ->select("sell.*, sell_info.*, user.name,city.name as city, province.name as province");
+                ->select("sell.*, sell_info.status,user.name");
 
         //filter
         if (isset($params['filter'])) {
@@ -98,8 +98,8 @@ class AppsellController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-        
-        
+
+
         $data = array();
         $i = 0;
         foreach ($models as $val) {
@@ -125,9 +125,20 @@ class AppsellController extends Controller {
     public function actionView($id) {
 
         $model = $this->findModel($id);
-        $data = $model->attributes;
+//        $data = $model->attributes;
+        $query = new Query;
+        $query->from('sell')
+                ->join('left join', 'sell_info', 'sell.id = sell_info.sell_id')
+                ->join('left join', 'user', 'sell.customer_user_id = user.id')
+                ->join('left join', 'city', 'sell_info.city_id = city.id')
+                ->join('left join', 'province', 'city.province_id = province.id')
+                ->where('sell.id="'.$model['id'].'"')
+                ->select("sell.*, sell_info.name,sell_info.sell_id,sell_info.status,sell_info.address,sell_info.phone,sell_info.postcode, user.name,city.name as city, province.name as province");
+        $command = $query->createCommand();
+          $models = $command->query()->read();
         // DETAIL
-         $det = SellDet::find()
+
+        $det = SellDet::find()
                 ->with(['product'])
                 ->orderBy('id')
                 ->where(['sell_id' => $model['id']])
@@ -139,21 +150,26 @@ class AppsellController extends Controller {
         foreach ($det as $key => $val) {
             $detail[$key] = $val->attributes;
 
-//            $namaBarang = (isset($val->barang->nama)) ? $val->barang->nama : '';
-//            $hargaBarang = (isset($val->barang->harga_beli_terakhir)) ? $val->barang->harga_beli_terakhir : '';
-//            
-//            $detail[$key]['produk'] = ['id' => $val->produk_id, 'nama' => $namaBarang, 'harga_beli_terakhir' => $hargaBarang, 'harga_jual' => $jualBarang];
-           
+            $namaBarang = (isset($val->product->name)) ? $val->product->name : '';
+            $hargaBarang = (isset($val->product->price_sell)) ? $val->product->price_sell : '';
+
+            $detail[$key]['produk'] = [ 'nama' => $namaBarang, 'harga' => $hargaBarang];
         }
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' =>$data,'detail'=>$detail), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $models, 'detail' => $detail), JSON_PRETTY_PRINT);
     }
 
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
+        \Yii::error($params);
         $model = $this->findModel($id);
         $model->attributes = $params;
+        
+        $det = \common\models\SellInfo::find()
+                ->where(['sell_id' => $model['id']])->one();
+        $det->status = $params['status'];
+        $det->save();
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -167,6 +183,8 @@ class AppsellController extends Controller {
     public function actionDelete($id) {
         Yii::error($id);
         $model = $this->findModel($id);
+        $deleteDetail = SellDet::deleteAll(['sell_id' => $id]);
+        $deleteDetailinfo = \common\models\SellInfo::deleteAll(['sell_id' => $id]);
 
         if ($model->delete()) {
             $this->setHeader(200);

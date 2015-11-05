@@ -3,14 +3,14 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\Article;
+use common\models\Payment;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class ApparticleController extends Controller {
+class ApppaymentController extends Controller {
 
     public function behaviors() {
         return [
@@ -50,11 +50,13 @@ class ApparticleController extends Controller {
         return true;
     }
 
+   
+
     public function actionIndex() {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "article.created DESC";
+        $sort = "payment.id DESC";
         $offset = 0;
         $limit = 10;
         //        Yii::error($params);
@@ -79,10 +81,10 @@ class ApparticleController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('article')
-                ->join('join','article_category','article_category.id = article.article_category_id')
+                ->from('payment')
+                ->join('LEFT join', 'user', 'user.id = payment.created_user_id')
                 ->orderBy($sort)
-                ->select("article.*, article_category.name");
+                ->select("payment.*, user.name as user");
 
         //filter
         if (isset($params['filter'])) {
@@ -95,51 +97,54 @@ class ApparticleController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-
+        
         $data = array();
-        $i=0;
+        $i = 0;
         foreach ($models as $val) {
             $data[$i] = $val;
-            if($val['publish'] == "1"){
-                $data[$i]['status_publish'] = "Publish";
-            }else{
-                $data[$i]['status_publish'] = "Unpublish";
+            if ($val['status'] == "confirm") {
+                $data[$i]['status_bayar'] = 'Confirm';
+            } elseif($val['status'] == "pending") {
+                $data[$i]['status_bayar'] = 'Pending';
+            
+            } else{
+                $data[$i]['status_bayar'] = 'Reject';
             }
-        $i++;
+            $i++;
         }
-        
+
+
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $data, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
-       public function actionKategories() {
-        $query = new Query;
-        $query->from('article_category')
-                ->select("*");
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-
-        $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'kategori' => $models));
-    }
-    
 
     public function actionView($id) {
 
         $model = $this->findModel($id);
+        $data = $model->attributes;
+        $cus = \common\models\Province::find()
+                ->where(['id' => $model['province_id']])
+                ->One();
+        $idpro = (isset($cus->id)) ? $cus->id : '';
+        $name = (isset($cus->name)) ? $cus->name : '';
+
+
+        $data['provinces'] = [
+            'id' => $idpro,
+            'name' => $name,
+        ];
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $data), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Article();
+        $model = new Payment();
         $model->attributes = $params;
-        $model->alias = Yii::$app->landa->urlParsing($model->title);
-        
+        $model->province_id = $params['provinces']['id'];
+
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -152,6 +157,7 @@ class ApparticleController extends Controller {
 
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
+        \Yii::error($params);
         $model = $this->findModel($id);
         $model->attributes = $params;
 
@@ -179,7 +185,7 @@ class ApparticleController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = Payment::findOne($id)) !== null) {
             return $model;
         } else {
 
