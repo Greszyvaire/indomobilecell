@@ -105,37 +105,37 @@ angular.module('app')
                                     url: '/filemanager',
                                     templateUrl: 'tpl/filemanager/index.html',
                                 })
-                                  .state('master.userprofile', {
+                                .state('master.userprofile', {
                                     url: '/profile',
                                     templateUrl: 'tpl/m_user/profile.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
-                                            function($ocLazyLoad) {
+                                            function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load('js/controllers/pengguna_profile.js');
                                             }]
                                     }
                                 })
-                                  .state('master.customer', {
+                                .state('master.customer', {
                                     url: '/customer',
                                     templateUrl: 'tpl/m_customer/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
-                                            function($ocLazyLoad) {
+                                            function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load('js/controllers/customer.js');
                                             }]
                                     }
                                 })
-                                  .state('master.pengiriman', {
+                                .state('master.pengiriman', {
                                     url: '/pengiriman',
                                     templateUrl: 'tpl/m_pengiriman/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
-                                            function($ocLazyLoad) {
+                                            function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load('js/controllers/pengiriman.js');
                                             }]
                                     }
                                 })
-                                   .state('transaksi.payment', {
+                                .state('transaksi.payment', {
                                     url: '/payment',
                                     templateUrl: 'tpl/t_payment/index.html',
                                     resolve: {
@@ -150,47 +150,54 @@ angular.module('app')
                                             }]
                                     }
                                 })
-                                  .state('master.satuan', {
+                                .state('master.satuan', {
                                     url: '/satuan',
                                     templateUrl: 'tpl/m_satuan/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
-                                            function($ocLazyLoad) {
+                                            function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load('js/controllers/satuan.js');
                                             }]
                                     }
                                 })
-                                  .state('master.barang', {
+                                .state('master.barang', {
                                     url: '/barang',
                                     templateUrl: 'tpl/m_barang/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
-                                            function($ocLazyLoad) {
-                                                return $ocLazyLoad.load('js/controllers/barang.js');
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['textAngular','angularFileUpload'])
+                                                        .then(
+                                                                function () {
+                                                                    return $ocLazyLoad.load('js/controllers/barang.js');
+                                                                }
+                                                        );
                                             }]
                                     }
                                 })
-                                  .state('transaksi.sell', {
+                                .state('transaksi.sell', {
                                     url: '/sell',
                                     templateUrl: 'tpl/t_sell/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
-                                            function($ocLazyLoad) {
+                                            function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load('js/controllers/sell.js');
                                             }]
                                     }
                                 })
-                                  .state('master.merk', {
+                                .state('master.merk', {
                                     url: '/merk',
                                     templateUrl: 'tpl/m_merk/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
-                                            function($ocLazyLoad) {
+                                            function ($ocLazyLoad) {
+
                                                 return $ocLazyLoad.load('js/controllers/merk.js');
+
                                             }]
                                     }
                                 })
-                                
+
 
 
                     }

@@ -1,16 +1,379 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<div ng-controller="appbarangCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Data Master - Barang</h1>
+    </div>
+    <div class="wrapper-md" ng-show="!is_edit">
+        <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
+            <div class="panel-heading">
+                <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian</button>
+                <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
+                    <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
+                </div> 
+            </div>
+            <div collapse="isCollapsed" class="panel-body collapse" style="height: 0px;">
+                <div class="form-horizontal">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Nama</label>
+                            <div class="col-sm-6">
+                                <input st-search="name" class="form-control"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" >
+                    <thead>
+                        <tr>
+                            <th st-sort="code">Code</th>
+                            <th st-sort="name">Nama</th>
+                            <th st-sort="type">Type</th>
+                            <th st-sort="category">Category</th>
+                            <th st-sort="satuan">Satuan</th>
+                            <th st-sort="price_sell">Harga Jual</th>
+                            <th st-sort="stock">Stock</th>
+                            <th st-sort="brand">Brand</th>
+                            <th st-sort="created">Created</th>
+                            <th style="text-align: center;">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody ng-show="!isLoading">
+                        <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
+                            <td>{{row.code}}</td>
+                            <td>{{row.name}}</td>
+                            <td>{{row.type}}</td>
+                            <td>{{row.category}}</td>
+                            <td>{{row.satuan}}</td>
+                            <td>{{row.price_sell| currency:undefined:0}}</td>
+                            <td>{{row.stock}}</td>
+                            <td>{{row.brand}}</td>
+                            <td>{{row.created}}</td>
+                            <td>
+                                <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
+
+                                    <button type="button" class="btn btn-success fa fa-dollar" title="Update Harga" ng-click="modal(row)"></button>
+                                    <button type="button" class="btn btn-info fa fa-edit" title="Update Item" ng-click="update(row)"></button>
+                                    <button type="button" class="btn btn-danger fa fa-minus-circle" title="Delete" ng-click="delete(row);"></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="isLoading">
+                        <tr>
+                            <td colspan="12" class="text-center">Loading ... </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="12" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
+                            </td>
+                        </tr>
+                </table>		
+            </div>
+        </div>
+    </div>
+
+    <!--FORM-->
+
+    <div class="wrapper-md" ng-show="is_edit">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{formtitle}} 
+            </div>
+            <div class="panel-body">
+                <form name="landaform" class="form-horizontal form-validation">
+                    <div class="row">
+                        <tabset class="tab-container">
+                            <tab>
+                                <tab-heading>
+                                    <i class="glyphicon glyphicon-list"></i> Global
+                                </tab-heading>
+                                <div class="row">
+                                    <!--<div class="col-md-12 col-sm-12">-->
+                                    <div class="col-md-12 col-sm-12">
+
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Code</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" ng-model="form.code" ng-disabled="is_view" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Nama</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" ng-model="form.name" ng-disabled="is_view">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Kategori</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                        <ui-select ng-model="form.listcategory" theme="bootstrap" required>
+                                                            <ui-select-match>{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-choices refresh="cariCategory($select.search)" repeat="val in listcat">
+                                                                {{val.name}}
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button ng-click="form.listcategory = undefined" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Brand</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                        <ui-select ng-model="form.listbrand" theme="bootstrap" required>
+                                                            <ui-select-match>{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-choices refresh="cariBrand($select.search)" repeat="val in listbrand">
+                                                                {{val.name}}
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button ng-click="form.listbrand = undefined" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Satuan</label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control"  ng-selected="{{satuan.id == form.product_measure_id}}" ng-model="form.product_measure_id" ng-disabled="is_view" required>
+                                                        <option value="">- Pilih Satuan -</option>
+                                                        <option ng-repeat="satuan in listsatuan" value="{{satuan.id}}">{{satuan.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Harga Jual</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group" style="margin:0px;">
+                                                        <span class="input-group-addon">Rp</span>
+                                                        <input type="text" class="form-control angka" ng-model="form.price_sell" ng-disabled="is_view">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Discount</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group" style="margin:0px;">
+                                                        <span class="input-group-addon">Rp</span>
+                                                        <input type="text" class="form-control angka" ng-model="form.discount" ng-disabled="is_view">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab>
+                                <tab-heading>
+                                    <i class="glyphicon  glyphicon-list-alt"></i> Detail
+                                </tab-heading>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="col-md-4 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Weight</label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group" style="margin:0px;">
+                                                        <input type="text" class="form-control angka" ng-model="form.weight" ng-disabled="is_view">
+
+                                                        <span class="input-group-addon">Kg</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Width</label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group" style="margin:0px;">
+                                                        <input type="text" class="form-control angka" ng-model="form.width" ng-disabled="is_view">
+
+                                                        <span class="input-group-addon">Kg</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Height</label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group" style="margin:0px;">
+                                                        <input type="text" class="form-control angka" ng-model="form.height" ng-disabled="is_view">
+
+                                                        <span class="input-group-addon">Cm</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Length</label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group" style="margin:0px;">
+                                                        <input type="text" class="form-control angka" ng-model="form.length" ng-disabled="is_view">
+
+                                                        <span class="input-group-addon">Cm</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Stok</label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group" style="margin:0px;">
+                                                        <input type="text" class="form-control angka" ng-model="form.stock" ng-disabled="is_view">
+                                                        <span class="input-group-addon">Unit</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label">Deskripsi</label>
+                                            <div class="col-sm-11">
+                                                <div lazy-load="textAngular">
+                                                    <div text-angular ng-model="form.description" ng-disabled="is_view" class="btn-groups" required></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>   
+                            <tab>
+                                <tab-heading>
+                                    <i class="glyphicon glyphicon-picture"></i> Photo
+                                </tab-heading>
+                                <div class="hbox hbox-auto-xs hbox-auto-sm"nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+                                    <div class="row" >
+                                        <div class="col-md-4">
+                                            <div class="wrapper-md dker b-b">
+                                                <h3 class="m-n font-thin">Select files</h3>
+                                            </div>
+                                            <div class="wrapper-md">      
+                                                <div ng-show="uploader.isHTML5" class="m-b-md">
+                                                    <div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploader">
+                                                        Drop Gambar
+                                                    </div>
+                                                </div>
+
+                                                <p>Pilih Gambar</p>
+                                                <input type="file" nv-file-select="" uploader="uploader" multiple  />
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="wrapper-md">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="50%">Name</th>
+                                                            <th ng-show="uploader.isHTML5">Size</th>
+                                                            <th ng-show="uploader.isHTML5">Progress</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="item in uploader.queue">
+                                                            <td><strong>{{ item.file.name}}</strong></td>
+                                                            <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size / 1024 / 1024|number:2 }} MB</td>
+                                                            <td ng-show="uploader.isHTML5">
+                                                                <div class="progress progress-sm m-b-none m-t-xs">
+                                                                    <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-default btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+                                                                    Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div>
+                                                    <div>
+                                                        <p>Proses Upload:</p>
+                                                        <div class="progress bg-light dker" style="">
+                                                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <button type="button" class="btn btn-addon btn-success" ng-click="uploadGambar(form.nik)" ng-disabled="!uploader.getNotUploadedItems().length">
+                                                            <i class="fa fa-arrow-circle-o-up"></i> Upload all
+                                                        </button>
+                                                        <button type="button" class="btn btn-addon btn-warning" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                                                            <i class="fa fa-ban"></i> Cancel all
+                                                        </button>
+                                                        <button type="button" class="btn btn-addon btn-danger" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                                            <i class="fa fa-trash-o"></i> Remove all
+                                                        </button>
+                                                    </div>
+                                                    <br>
+                                                    <div class="alert alert-info" ng-show="is_create"> 
+                                                        <i>
+                                                            " Gambar yang di upload pertama akan otomatis di jadikan sebagai gambar produk. "
+                                                        </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="wrapper-md dker b-b" style="margin-bottom: 25px;">
+                                                <h3 class="m-n font-thin">Detail Foto</h3>
+                                            </div>
+                                            <div ng-repeat="slide in gambar" class="col-md-2 m-b repeat-animation hide-fade">
+                                                {{slide}}
+                                                <a href="" ng-click="gambarzoom(slide.id, slide.img)"><img ng-src="img/barang/{{slide.id}}-150x150-{{slide.img}}" class="img-thumbnail"></a>
+                                                <p align="center" style="padding:10px;" ng-show="!is_view">
+                                                    <a href="" ng-click="removeFoto($index, slide.img, form.id)"><i class="btn btn-danger fa fa-trash" title="Hapus"></i></a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+
+
+                    <div class="col-md-2 col-sm-12"></div>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                    <div align="center">
+                        <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
+                        <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form)">&nbsp;Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

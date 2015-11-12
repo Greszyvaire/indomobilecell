@@ -3,14 +3,14 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\City;
+use common\models\Satuan;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class AppcityController extends Controller {
+class AppsatuanController extends Controller {
 
     public function behaviors() {
         return [
@@ -18,9 +18,7 @@ class AppcityController extends Controller {
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'index' => ['get'],
-                    'cari' => ['get'],
                     'view' => ['get'],
-                    'province' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
@@ -55,9 +53,9 @@ class AppcityController extends Controller {
         
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('city')
-                ->select("city.*")
-                ->andWhere(['like', 'city.name', $params['nama']]);
+        $query->from('product_measure')
+                ->select("product_measure.*")
+                ->andWhere(['like', 'product_measure.name', $params['nama']]);
 
         $command = $query->createCommand();
         $models = $command->queryAll();
@@ -67,23 +65,13 @@ class AppcityController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models));
     }
 
-    public function actionProvince() {
-        $params = $_REQUEST;
-        $query = new Query;
-        $query->from('province')
-                ->select("province.*")
-                ->andWhere(['like', 'name', $params['nama']]);
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-        $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models));
-    }
+  
 
     public function actionIndex() {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "city.id DESC";
+        $sort = "product_measure.id DESC";
         $offset = 0;
         $limit = 10;
         //        Yii::error($params);
@@ -108,10 +96,9 @@ class AppcityController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('city')
-                ->join('join', 'province', 'province.id = city.province_id')
+                ->from('product_measure')
                 ->orderBy($sort)
-                ->select("city.*, province.name as province");
+                ->select("product_measure.*");
 
         //filter
         if (isset($params['filter'])) {
@@ -136,17 +123,7 @@ class AppcityController extends Controller {
 
         $model = $this->findModel($id);
         $data = $model->attributes;
-        $cus = \common\models\Province::find()
-                ->where(['id' => $model['province_id']])
-                ->One();
-        $idpro = (isset($cus->id)) ? $cus->id : '';
-        $name = (isset($cus->name)) ? $cus->name : '';
-
-
-        $data['provinces'] = [
-            'id' => $idpro,
-            'name' => $name,
-        ];
+        
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $data), JSON_PRETTY_PRINT);
@@ -154,10 +131,8 @@ class AppcityController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new City();
+        $model = new Satuan();
         $model->attributes = $params;
-        $model->province_id = $params['provinces']['id'];
-
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -170,7 +145,7 @@ class AppcityController extends Controller {
 
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
-        \Yii::error($params);
+        
         $model = $this->findModel($id);
         $model->attributes = $params;
          $model->province_id = $params['provinces']['id'];
@@ -185,7 +160,7 @@ class AppcityController extends Controller {
     }
 
     public function actionDelete($id) {
-        Yii::error($id);
+      
         $model = $this->findModel($id);
 
         if ($model->delete()) {
@@ -199,7 +174,7 @@ class AppcityController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = City::findOne($id)) !== null) {
+        if (($model = Satuan::findOne($id)) !== null) {
             return $model;
         } else {
 

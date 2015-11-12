@@ -101,6 +101,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div><!-- /.field-row -->
 
                     <div class="field-row">
+                        <label>Telp *</label>
+                        <input type="text" class="le-input" name="User[phone]"  required>
+                    </div><!-- /.field-row -->
+                    
+                    <div class="field-row">
                         <label>Jenis Kelamin</label>
 
                         <select name="User[sex]" class="le-input">
@@ -108,6 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <option value="f">Perempuan</option>
                         </select>
                     </div><!-- /.field-row -->
+                    
                     <br>
                     <div class="buttons-holder">
                         <button type="submit" class="le-button huge">Daftar</button>

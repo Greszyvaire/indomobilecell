@@ -14,9 +14,9 @@
                 <div class="form-horizontal">
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Judul</label>
+                            <label class="col-sm-3 control-label">Nama</label>
                             <div class="col-sm-6">
-                                <input st-search="title" class="form-control"/>
+                                <input st-search="name" class="form-control"/>
                             </div>
                         </div>
 
@@ -74,40 +74,63 @@
             <div class="panel-body">
                 <form name="landaform" class="form-horizontal form-validation">
                     <div class="col-md-12 col-sm-12">
-                      
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">Name</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="form.name" ng-disabled="is_view" required>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Nama</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.name" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Username</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.username" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Password</label>
+                                <div class="col-sm-6">
+                                    <input type="Password" class="form-control" ng-model="form.password" ng-disabled="is_view">
+                                    <span class="help-block m-b-none"><i>Isikan password baru, untuk mengganti password</i></span>
+
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">Username</label>
-                            <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="form.username" ng-disabled="is_view" required>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Jenis Kelamin</label>
+                                <div class="col-sm-6">
+                                    <div class="btn-group m-r">
+                                        <label class="btn btn-default" ng-model="form.sex" btn-radio="'f'" required>Perempuan</label>
+                                        <label class="btn btn-default" ng-model="form.sex" btn-radio="'m'" required>Laki - Laki</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Status</label>
+                                <div class="col-sm-6">
+                                    <div class="btn-group m-r">
+                                        <label class="btn btn-default" ng-model="form.enabled" btn-radio="'1'" required>Aktif</label>
+                                        <label class="btn btn-default" ng-model="form.enabled" btn-radio="'0'" required>Tidak Aktif</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Email</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.email" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">No. Telp</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.phone" ng-disabled="is_view">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">Password</label>
-                            <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="form.password" ng-disabled="is_view" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">Status</label>
-                            <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="form.username" ng-disabled="is_view" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">Username</label>
-                            <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="form.username" ng-disabled="is_view" required>
-                            </div>
-                        </div>
-                        
-                      
-                        
+
+
                     </div>
 
 

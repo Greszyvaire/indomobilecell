@@ -102,7 +102,7 @@ class AppcustomerController extends Controller {
         foreach ($models as $val) {
             $data[$i] = $val;
             $city = \common\models\City::findOne($val['city_id']);
-            $data[$i]['city'] = (empty($city)) ? [] : $city->attributes;
+//            $data[$i]['city'] = (empty($city)) ? [] : $city->attributes;
             $data[$i]['nama_kota'] = (empty($city)) ? '-' : $city->name;
             $i++;
         }
@@ -140,6 +140,11 @@ class AppcustomerController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
+        if (!empty($params['password'])) {
+            $model->password = sha1($model['password']);
+        } else {
+            unset($model->password);
+        }
 
         if ($model->save()) {
             $this->setHeader(200);

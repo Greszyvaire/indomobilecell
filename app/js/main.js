@@ -12,7 +12,7 @@ angular.module('app')
 
                 // config
                 $scope.app = {
-                    name: 'Indomobilecell',
+                    name: 'INDOMOBILECELL',
                     version: '1.1',
                 }
 

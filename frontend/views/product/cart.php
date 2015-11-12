@@ -44,7 +44,7 @@ use yii\bootstrap\ActiveForm
                 <div class="col-xs-12 col-sm-3 no-margin">
                     <div class="quantity"  name="qty[]">
                         <select class = "le-quantity" name="qty['.$key.']" style="width: 70px;">';
-                       for($no=1;$no<=$product->realStock;$no++){
+                       for($no=1;$no<=$product->stock;$no++){
                             $selected = ($no == $value) ? 'selected' :'';
                            echo '<option '.$selected.' value="'.$no.'">'.$no.'</option>'; 
                         }

@@ -1,7 +1,7 @@
 <!-- navbar header -->
 <div class="navbar-header {{app.settings.navbarHeaderColor}}">
     <a ui-sref="app.dashboard" class="navbar-brand text-lt">
-        <img src="../img/logos.png" alt="." style="display: inline">
+        <!--<img src="../img/logos.png" alt="." style="display: inline">-->
         <span class="hidden-folded m-l-xs">{{app.name}}</span>
     </a>
     <button class="pull-right visible-xs" ui-toggle-class="show" data-target=".navbar-collapse" ui-scroll="app">
@@ -14,18 +14,18 @@
 <div class="collapse pos-rlt navbar-collapse box-shadow {{app.settings.navbarCollapseColor}}">
     <!-- link and dropdown -->
     <ul class="nav navbar-nav">
-        <li class="dropdown pos-stc" dropdown>
+        <li class="dropdown" dropdown>
             <a href class="dropdown-toggle" dropdown-toggle>
                 <i class="glyphicon glyphicon-th-large icon text-info-lter"></i>
                 <span>Data Master</span> 
                 <span class="caret"></span>
             </a>
-            <div class="dropdown-menu wrapper w-full bg-white">
+<!--            <div class="dropdown-menu wrapper w-full bg-white">
                 <div class="row">
                     <div class="col-sm-4 b-l b-light">
                         <div class="row">
-                            <div class="col-xs-6">
-                                <ul class="list-unstyled l-h-2x">
+                            <div class="col-xs-6">-->
+                                <ul class="dropdown-menu" role="menu">
                                     <li>
                                         <a ui-sref="master.pengguna"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>User</a>
                                     </li>
@@ -38,10 +38,10 @@
                                     <li>
                                         <a ui-sref="master.pengiriman"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pengiriman</a>
                                     </li>
-                                </ul>
+<!--                                </ul>
                             </div>
                             <div class="col-xs-6">
-                                <ul class="list-unstyled l-h-2x">
+                                <ul class="list-unstyled l-h-2x">-->
                                     <li>
                                         <a ui-sref="master.satuan"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Satuan</a>
                                     </li>
@@ -49,31 +49,29 @@
                                         <a ui-sref="master.barang"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Barang</a>
                                     </li>
                                     <li>
-                                        <a ui-sref="master.inventory"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Inventory</a>
-                                    </li>
-                                    <li>
                                         <a ui-sref="master.merk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Merk</a>
                                     </li>
                                 </ul>
-                            </div>
+<!--                            </div>
 
                         </div>
                     </div>
 
                 </div>
-            </div>
+            </div>-->
         </li>
-        <li class="dropdown pos-stc" dropdown>
+        <li class="dropdown" dropdown>
             <a href class="dropdown-toggle" dropdown-toggle>
+                <i class="fa fa-dollar text-info-lter"></i>
                 <span>Transaksi</span> 
                 <span class="caret"></span>
             </a>
-            <div class="dropdown-menu wrapper w-full bg-white">
+<!--            <div class="dropdown-menu wrapper w-full bg-white">
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="row">
-                            <div class="col-xs-12">
-                                <ul class="list-unstyled l-h-2x">
+                            <div class="col-xs-12">-->
+                               <ul class="dropdown-menu" role="menu">
                                     <li >
                                         <a ui-sref='transaksi.payment'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Payment</a>
                                     </li>
@@ -81,12 +79,12 @@
                                         <a ui-sref='transaksi.sell'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Sell</a>
                                     </li>
                                 </ul>
-                            </div>
+<!--                            </div>
                         </div>
                     </div>
                     
                     
-                </div>
+                </div>-->
         </li>
 
     </ul>

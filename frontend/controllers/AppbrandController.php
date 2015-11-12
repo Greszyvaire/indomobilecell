@@ -3,14 +3,14 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\City;
+use common\models\ProductBrand;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class AppcityController extends Controller {
+class AppbrandController extends Controller {
 
     public function behaviors() {
         return [
@@ -18,9 +18,8 @@ class AppcityController extends Controller {
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'index' => ['get'],
-                    'cari' => ['get'],
                     'view' => ['get'],
-                    'province' => ['get'],
+                    'cari' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
@@ -55,35 +54,25 @@ class AppcityController extends Controller {
         
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('city')
-                ->select("city.*")
-                ->andWhere(['like', 'city.name', $params['nama']]);
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-
-        $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'data' => $models));
-    }
-
-    public function actionProvince() {
-        $params = $_REQUEST;
-        $query = new Query;
-        $query->from('province')
-                ->select("province.*")
+        $query->from('product_brand')
+                ->select("*")
                 ->andWhere(['like', 'name', $params['nama']]);
+
         $command = $query->createCommand();
         $models = $command->queryAll();
+
         $this->setHeader(200);
+
         echo json_encode(array('status' => 1, 'data' => $models));
     }
+
+  
 
     public function actionIndex() {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "city.id DESC";
+        $sort = "product_brand.id DESC";
         $offset = 0;
         $limit = 10;
         //        Yii::error($params);
@@ -108,10 +97,9 @@ class AppcityController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('city')
-                ->join('join', 'province', 'province.id = city.province_id')
+                ->from('product_brand')
                 ->orderBy($sort)
-                ->select("city.*, province.name as province");
+                ->select("*");
 
         //filter
         if (isset($params['filter'])) {
@@ -136,17 +124,7 @@ class AppcityController extends Controller {
 
         $model = $this->findModel($id);
         $data = $model->attributes;
-        $cus = \common\models\Province::find()
-                ->where(['id' => $model['province_id']])
-                ->One();
-        $idpro = (isset($cus->id)) ? $cus->id : '';
-        $name = (isset($cus->name)) ? $cus->name : '';
-
-
-        $data['provinces'] = [
-            'id' => $idpro,
-            'name' => $name,
-        ];
+        
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $data), JSON_PRETTY_PRINT);
@@ -154,10 +132,8 @@ class AppcityController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new City();
+        $model = new ProductBrand();
         $model->attributes = $params;
-        $model->province_id = $params['provinces']['id'];
-
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -170,7 +146,7 @@ class AppcityController extends Controller {
 
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
-        \Yii::error($params);
+        
         $model = $this->findModel($id);
         $model->attributes = $params;
          $model->province_id = $params['provinces']['id'];
@@ -185,7 +161,7 @@ class AppcityController extends Controller {
     }
 
     public function actionDelete($id) {
-        Yii::error($id);
+      
         $model = $this->findModel($id);
 
         if ($model->delete()) {
@@ -199,7 +175,7 @@ class AppcityController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = City::findOne($id)) !== null) {
+        if (($model = ProductBrand::findOne($id)) !== null) {
             return $model;
         } else {
 

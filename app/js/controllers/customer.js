@@ -33,6 +33,17 @@ app.controller('appcustomerCtrl', function ($scope, Data, toaster) {
 
         $scope.isLoading = false;
     };
+    
+    $scope.cariCity = function ($query) {
+
+        if ($query.length >= 3) {
+            Data.get('appcity/cari', {nama: $query}).then(function (data) {
+
+                $scope.listcity = data.data;
+            });
+        }
+    }
+
 
     $scope.create = function (form) {
         $scope.is_edit = true;
@@ -45,6 +56,7 @@ app.controller('appcustomerCtrl', function ($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Edit Data : " + form.username;
         $scope.form = form;
+        $scope.form.password = "";
     };
     $scope.view = function (form) {
         $scope.is_edit = true;

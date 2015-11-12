@@ -2,8 +2,10 @@ app.factory("Data", ['$http', '$location',
     function ($http, $q, $location) {
         var serviceBase = '../frontend/web/indomobilecell/';
         var suffix = '.html';
+        var photoDir = '../app/';
 
         var obj = {};
+        obj.base = serviceBase;
 
         obj.get = function (q, object) {
             return $http.get(serviceBase + q + suffix, {

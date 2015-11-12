@@ -233,7 +233,7 @@ $session = Yii::$app->session;
                                 </div>
 
                                 <div class="hover-area">';
-                            if ($data->realStock == 0) {
+                            if ($data->stock == 0) {
                                 echo' <div class="add-cart-button">
                                         <a href="#" style="background-color: crimson;" class="le-button">Stock Habis</a>
                                    </div>';
@@ -286,7 +286,7 @@ $session = Yii::$app->session;
                                 </div>
 
                                 <div class="hover-area">';
-                            if ($data->realStock == 0) {
+                            if ($data->stock == 0) {
                                 echo' <div class="add-cart-button">
                                         <a href="#" style="background-color: crimson;" class="le-button">Stock Habis</a>
                                    </div>';
@@ -333,7 +333,7 @@ $session = Yii::$app->session;
                                 </div>
 
                                 <div class="hover-area">';
-                            if ($data->realStock == 0) {
+                            if ($data->stock == 0) {
                                 echo' <div class="add-cart-button">
                                         <a href="#" style="background-color: crimson;" class="le-button">Stock Habis</a>
                                    </div>';
@@ -384,7 +384,7 @@ $session = Yii::$app->session;
                                 <div class="price-current text-right">' . $arr->price_sell_rp . '</div>
                             </div>
                             <div class="hover-area">';
-                        if ($arr->realStock == 0) {
+                        if ($arr->stock == 0) {
                             echo' <div class="add-cart-button">
                                         <a href="#" style="background-color: crimson;" class="le-button">Stock Habis</a>
                                    </div>';
@@ -420,7 +420,7 @@ $session = Yii::$app->session;
                                 <div class="price-current text-right">' . $arr->price_sell_rp . '</div>
                             </div>
                             <div class="hover-area">';
-                        if ($arr->realStock == 0) {
+                        if ($arr->stock == 0) {
                             echo' <div class="add-cart-button">
                                         <a href="#" style="background-color: crimson;" class="le-button">Stock Habis</a>
                                    </div>';
@@ -481,7 +481,15 @@ $session = Yii::$app->session;
                     </div>
                     <div class="prices text-right">
                         <div class="price-current inline"><?= $alone->price_sell_rp ?></div>
-                        <a href="#" class="le-button big inline">Beli</a>
+                        <?php
+                        if($alone->stock == 0){
+                       
+                       echo '<a href="#" style="background-color: crimson;" class="le-button">Stock Habis</a>';
+                        
+                        }else{
+                            echo ' <a href="#" class="le-button big inline">Beli</a>'; 
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -523,7 +531,7 @@ $session = Yii::$app->session;
                             <div class="price-current text-right">' . $data->price_sell_rp . '</div>
                         </div>
                         <div class="hover-area">';
-                    if ($data->realStock == 0) {
+                    if ($data->stock == 0) {
                         echo' <div class="add-cart-button">
                                         <a href="#" style="background-color: crimson;" class="le-button">Stock Habis</a>
                                    </div>';
