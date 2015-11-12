@@ -3,7 +3,9 @@
 namespace common\models;
 
 use Yii;
-
+use yii\db\ActiveRecord;
+use yii\behaviors\SluggableBehavior;
+use yii\behaviors\BlameableBehavior;
 /**
  * This is the model class for table "acca_article".
  *
@@ -69,6 +71,19 @@ class Article extends \yii\db\ActiveRecord
     
     public function getUrl(){
         return Yii::$app->urlManager->createUrl($this->alias);
+    }
+    
+     public function behaviors() {
+        return [
+
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+            ],
+        ];
     }
     
 }

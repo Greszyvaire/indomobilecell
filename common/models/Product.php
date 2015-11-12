@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\SluggableBehavior;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "acca_product".
@@ -45,9 +48,11 @@ class Product extends \yii\db\ActiveRecord {
     public function getBrand() {
         return $this->hasOne(ProductBrand::className(), ['id' => 'product_brand_id']);
     }
+
     public function getProductPhoto() {
         return $this->hasOne(ProductPhoto::className(), ['id' => 'product_photo_id']);
     }
+
     public function getProductCategory() {
         return $this->hasOne(ProductCategory::className(), ['id' => 'product_category_id']);
     }
@@ -103,11 +108,12 @@ SRV : Service',
     public function getPrice_sell_rp() {
         return Yii::$app->landa->rp($this->price_sell);
     }
+
     public function getDiscount_rp() {
-        if(!empty($this->discount)){
+        if (!empty($this->discount)) {
             $discount = Yii::$app->landa->rp($this->discount);
-        }else{
-            $discount='';
+        } else {
+            $discount = '';
         }
         return $discount;
     }
@@ -119,27 +125,30 @@ SRV : Service',
             return "";
     }
 
-    public function getImgSmall(){
+    public function getImgSmall() {
         if (empty($this->product_photo_id) || empty($this->productPhoto->img)) {
             return Yii::$app->params['urlImg'] . '150x150-noimage.jpg';
         } else {
             return Yii::$app->params['urlImg'] . 'product/' . $this->product_photo_id . '-150x150-' . Yii::$app->landa->urlParsing($this->productPhoto->img);
         }
     }
-    public function getImgMedium(){
+
+    public function getImgMedium() {
         if (empty($this->product_photo_id) || empty($this->productPhoto->img)) {
             return Yii::$app->params['urlImg'] . '350x350-noimage.jpg';
         } else {
             return Yii::$app->params['urlImg'] . 'product/' . $this->product_photo_id . '-350x350-' . Yii::$app->landa->urlParsing($this->productPhoto->img);
         }
     }
-    public function getImgBig(){
+
+    public function getImgBig() {
         if (empty($this->product_photo_id) || empty($this->productPhoto->img)) {
             return Yii::$app->params['urlImg'] . '650x650-noimage.jpg';
         } else {
             return Yii::$app->params['urlImg'] . 'product/' . $this->product_photo_id . '-650x650-' . Yii::$app->landa->urlParsing($this->productPhoto->img);
         }
     }
+
     public function getUrl() {
         if (!isset($this->productCategory->alias)) {
             return '#';
@@ -147,19 +156,33 @@ SRV : Service',
             return Yii::$app->urlManager->createUrl('detail/' . $this->productCategory->alias . '/' . $this->alias);
         }
     }
-    public function getIsNew(){
+
+    public function getIsNew() {
         //jika tanggal lebih dari 30 hari dari sekarang, berarti barang baru
-        if (strtotime($this->created) >= (time() - (86400*30)))
+        if (strtotime($this->created) >= (time() - (86400 * 30)))
             return TRUE;
         else
             return false;
-        
     }
-    
-    public function getRealStock(){
+
+    public function getRealStock() {
         $departement_id = 1;
         $stockDepartement = json_decode($this->stock);
         $stockDepartement = (empty($stockDepartement->$departement_id)) ? 0 : $stockDepartement->$departement_id;
         return $stockDepartement;
     }
+
+    public function behaviors() {
+        return [
+
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+            ],
+        ];
+    }
+
 }
