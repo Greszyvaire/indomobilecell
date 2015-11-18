@@ -36,7 +36,6 @@
                             <th st-sort="price_sell">Harga Jual</th>
                             <th st-sort="stock">Stock</th>
                             <th st-sort="brand">Brand</th>
-                            <th st-sort="created">Created</th>
                             <th style="text-align: center;">Action</th>
 
                         </tr>
@@ -51,7 +50,6 @@
                             <td>{{row.price_sell| currency:undefined:0}}</td>
                             <td>{{row.stock}}</td>
                             <td>{{row.brand}}</td>
-                            <td>{{row.created}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
 
@@ -351,8 +349,8 @@
                                                 <h3 class="m-n font-thin">Detail Foto</h3>
                                             </div>
                                             <div ng-repeat="slide in gambar" class="col-md-2 m-b repeat-animation hide-fade">
-                                                {{slide}}
-                                                <a href="" ng-click="gambarzoom(slide.id, slide.img)"><img ng-src="img/barang/{{slide.id}}-150x150-{{slide.img}}" class="img-thumbnail"></a>
+                                                <!--{{slide}}-->
+                                                <a href="" ng-click="gambarzoom(slide.id, slide.img)"><img ng-src="img/product/{{slide.id}}-150x150-{{slide.img}}" class="img-thumbnail"></a>
                                                 <p align="center" style="padding:10px;" ng-show="!is_view">
                                                     <a href="" ng-click="removeFoto($index, slide.img, form.id)"><i class="btn btn-danger fa fa-trash" title="Hapus"></i></a>
                                                 </p>

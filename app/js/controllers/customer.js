@@ -66,7 +66,7 @@ app.controller('appcustomerCtrl', function ($scope, Data, toaster) {
     };
     $scope.save = function (form) {
         
-        var url = (form.id > 0) ? 'appcustomer/update/' + form.id : 'appcustomer/create/';
+        var url = (form.id > 0) ? 'appcustomer/update/' + form.id : 'appcustomer/create';
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);

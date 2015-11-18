@@ -7,7 +7,7 @@
             <div class="panel-heading">
                 <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                    <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
+                    <!--<button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>-->
                 </div> 
             </div>
             <div collapse="isCollapsed" class="panel-body collapse" style="height: 0px;">
@@ -31,7 +31,7 @@
                             <th st-sort="username">Username</th>
                             <th st-sort="email">Email</th>
                             <th st-sort="name">Name</th>
-                            <th st-sort="nama_kota">Kota</th>
+                            <th st-sort="created">created</th>
 
                         </tr>
                     </thead>
@@ -40,7 +40,7 @@
                             <td>{{row.username}}</td>
                             <td>{{row.email}}</td>
                             <td>{{row.name}}</td>
-                            <td>{{row.nama_kota}}</td>
+                            <td>{{row.created*1000 | date:'medium'}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
                                     <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>

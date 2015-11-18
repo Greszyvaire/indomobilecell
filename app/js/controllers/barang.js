@@ -106,7 +106,7 @@ app.controller('appbarangCtrl', function ($scope, Data, toaster, FileUploader,$m
 
     //============================GAMBAR===========================//
     var uploader = $scope.uploader = new FileUploader({
-        url: Data.base +nmcontroller + '/upload.html?folder=barang',
+        url: Data.base +nmcontroller + '/upload.html?folder=product',
         formData: [],
         removeAfterUpload: true,
     });
@@ -161,7 +161,7 @@ app.controller('appbarangCtrl', function ($scope, Data, toaster, FileUploader,$m
     };
     $scope.gambarzoom = function (id, img) {
         var modalInstance = $modal.open({
-            template: '<img src="img/barang/' + id + '-350x350-' + img + '" class="img-full" >',
+            template: '<img src="img/product/' + id + '-350x350-' + img + '" class="img-full" >',
             size: 'md',
         });
     };
@@ -219,7 +219,7 @@ app.controller('modalCtrl', function ($scope, Data, $modalInstance, form) {
             form: formmodal,
         };
 
-        var url =  nmcontroller+'/updatedetail/';
+        var url =  nmcontroller+'/updatedetail';
         Data.post(url, data).then(function (result) {
 //            console.log(data);
             $scope.formmodal = result.data;
