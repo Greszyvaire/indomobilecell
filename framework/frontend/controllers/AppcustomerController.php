@@ -19,7 +19,7 @@ class AppcustomerController extends Controller {
                 'actions' => [
                     'index' => ['get'],
                     'view' => ['get'],
-                    'test' => ['get'],
+//                    'test' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],

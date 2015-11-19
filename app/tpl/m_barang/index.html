@@ -113,9 +113,9 @@
                                                 <div class="col-sm-6">
                                                     <div class="input-group">
                                                         <ui-select ng-model="form.listcategory" theme="bootstrap" required>
-                                                            <ui-select-match>{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-match>{{$select.selected.type}} - {{$select.selected.name}}</ui-select-match>
                                                             <ui-select-choices refresh="cariCategory($select.search)" repeat="val in listcat">
-                                                                {{val.name}}
+                                                                {{val.type}} - {{val.name}}
                                                             </ui-select-choices>
                                                         </ui-select>
                                                         <span class="input-group-btn">
@@ -200,7 +200,7 @@
                                                     <div class="input-group" style="margin:0px;">
                                                         <input type="text" class="form-control angka" ng-model="form.width" ng-disabled="is_view">
 
-                                                        <span class="input-group-addon">Kg</span>
+                                                        <span class="input-group-addon">Cm</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -244,9 +244,12 @@
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label">Deskripsi</label>
                                             <div class="col-sm-11">
-                                                <div lazy-load="textAngular">
-                                                    <div text-angular ng-model="form.description" ng-disabled="is_view" class="btn-groups" required></div>
-                                                </div>
+                                                <!--                                                <div lazy-load="textAngular">
+                                                                                                    <div text-angular ng-model="form.description" ng-disabled="is_view" class="btn-groups" required></div>
+                                                                                                </div>-->
+                                                <!--<div ng-cloak>-->
+                                                    <textarea ckeditor="editorOptions" name="editor" ng-model="form.description" required></textarea>
+                                                <!--</div>--> 
 
                                             </div>
                                         </div>
