@@ -186,6 +186,25 @@ class AppbarangController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+    
+    public function actionTest() {
+        $query = new Query;
+        $query->from('product_category')
+                ->select("id,parent_id");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+        $query = [];
+        $i = 0;
+        foreach ($models as $key => $val) {
+            $query[$i] = "UPDATE product_category SET type = '".$created."' WHERE product_category.id = ".$val['id'].";";
+        $i++;
+            
+        }
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $query, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
 
     public function setPhoto($id) {
         $query = new Query;
