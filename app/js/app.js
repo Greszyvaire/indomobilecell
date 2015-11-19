@@ -2,6 +2,7 @@
 
 
 angular.module('app', [
+    'ngCkeditor',
     'ngAnimate',
     'ngSanitize',
     'ui.router',

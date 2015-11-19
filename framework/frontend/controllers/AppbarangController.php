@@ -25,6 +25,7 @@ class AppbarangController extends Controller {
                     'catsrc' => ['get'],
                     'satlist' => ['get'],
                     'pid' => ['get'],
+//                    'test' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
@@ -197,8 +198,14 @@ class AppbarangController extends Controller {
         $query = [];
         $i = 0;
         foreach ($models as $key => $val) {
-            $query[$i] = "UPDATE product_category SET type = '".$created."' WHERE product_category.id = ".$val['id'].";";
-        $i++;
+            if(!empty($val['parent_id'])){
+            $cat = \common\models\ProductCategory::findOne($val['parent_id']);
+            $categor = strtoupper($cat->name);
+            $query[$i] = "UPDATE product_category SET type = '". $categor ."' WHERE product_category.id = ".$val['id'].";";
+             $i++;
+            }
+            
+           
             
         }
         $this->setHeader(200);
