@@ -152,7 +152,7 @@ if($usr_session_id == $model->customer_user_id){
                         Cara Pembayaran
                     </h5><br> <ol>          
                         <li> Pesanan Anda baru Kami kirim setelah Kami menerima pembayaran dari Anda.</li>
-                        <li> Kirim ke Rekening IndoMobile Cell:Jimmy Etmada - (BCA 0113161202)<br></li>
+                        <li> Kirim ke Rekening IndoMobile Cell:Jimmy Etmada - (BCA 0111110335)<br></li>
                         <li> Setelah melakukan Transfer mohon konfirmasikan dengan cara mengklik tombol <span class="label label-info">Konfirmasi Pembayaran </span> yang berada di atas.</li>
 
                     </ol>
