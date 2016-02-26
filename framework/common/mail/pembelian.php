@@ -148,4 +148,6 @@ $content = '<table border="0" cellpadding="0" cellspacing="0" style="font-size: 
             </table>
 
             <div style="border-top:1px solid #ccc;margin:15px 2px 0px 2px;width: 650px; line-height:10px">&nbsp;</div>';
+
+echo $content;
 ?>
